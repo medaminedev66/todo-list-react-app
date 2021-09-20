@@ -37,6 +37,12 @@ class TodoContainer extends Component {
     }));
   };
 
+  delTodo = (id) => {
+    this.setState((state) => ({
+      todos: state.todos.filter((todo) => todo.id !== id),
+    }));
+  };
+
   render() {
     return (
       <div>
@@ -44,6 +50,7 @@ class TodoContainer extends Component {
         <TodosList
           todos={this.state.todos}
           handelChangeProp={this.handleChange}
+          deleteTodoProp={this.delTodo}
         />
       </div>
     );

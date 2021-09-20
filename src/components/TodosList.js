@@ -10,6 +10,7 @@ class TodosList extends React.Component {
             key={todo.id}
             todo={todo}
             handelChangeProp={this.props.handelChangeProp}
+            deleteTodoProp={this.props.deleteTodoProp}
           />
         ))}
       </ul>
