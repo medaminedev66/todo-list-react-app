@@ -1,6 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './functionBased/index.css';
+import './classBased/index.css';
 import TodoContainer from './classBased/components/TodoContainer';
 
 ReactDOM.render(
