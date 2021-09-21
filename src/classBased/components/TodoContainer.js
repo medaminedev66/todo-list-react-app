@@ -1,28 +1,33 @@
 import React, { Component } from 'react';
 import TodosList from './TodosList';
 import Header from './Header';
-import InputTodo from './InputTodo';
+import InputTodo from '../../functionBased/components/InputTodo';
 import { v4 as uuidv4 } from 'uuid';
 class TodoContainer extends Component {
   state = {
-    todos: [
-      {
-        id: uuidv4(),
-        title: 'Setup development environment',
-        completed: true,
-      },
-      {
-        id: uuidv4(),
-        title: 'Develop website and add content',
-        completed: false,
-      },
-      {
-        id: uuidv4(),
-        title: 'Deploy to live server',
-        completed: false,
-      },
-    ],
+    todos: [],
   };
+
+  componentDidMount = () => {
+    const temp = localStorage.getItem('todos');
+    const loadedTodos = JSON.parse(temp);
+    if (loadedTodos) {
+      this.setState({
+        todos: loadedTodos,
+      });
+    }
+  };
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.todos !== this.state.todos) {
+      const temp = JSON.stringify(this.state.todos);
+      localStorage.setItem('todos', temp);
+    }
+  }
+
+  componentWillUnmount() {
+    console.log('Cleaning up...');
+  }
 
   handleChange = (id) => {
     this.setState((state) => ({
