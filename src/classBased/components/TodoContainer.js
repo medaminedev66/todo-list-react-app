@@ -1,12 +1,16 @@
+import { v4 as uuidv4 } from 'uuid';
 import React, { Component } from 'react';
 import TodosList from './TodosList';
 import Header from './Header';
 import InputTodo from './InputTodo';
-import { v4 as uuidv4 } from 'uuid';
+
 class TodoContainer extends Component {
-  state = {
-    todos: [],
-  };
+  constructor() {
+    super();
+    this.state = {
+      todos: [],
+    };
+  }
 
   componentDidMount = () => {
     const temp = localStorage.getItem('todos');
@@ -19,14 +23,11 @@ class TodoContainer extends Component {
   };
 
   componentDidUpdate(prevProps, prevState) {
-    if (prevState.todos !== this.state.todos) {
-      const temp = JSON.stringify(this.state.todos);
+    const { todos } = this.state;
+    if (prevState.todos !== todos) {
+      const temp = JSON.stringify(todos);
       localStorage.setItem('todos', temp);
     }
-  }
-
-  componentWillUnmount() {
-    console.log('Cleaning up...');
   }
 
   handleChange = (id) => {
@@ -49,21 +50,24 @@ class TodoContainer extends Component {
     }));
   };
 
-  addTodoItem = (title) => {
+  addTodoItem = (newtitle) => {
     const newTodo = {
       id: uuidv4(),
-      title: title,
+      title: newtitle,
       completed: false,
     };
+    const { todos } = this.state;
     this.setState({
-      todos: [...this.state.todos, newTodo],
+      todos: [...todos, newTodo],
     });
   };
 
   editTodo = (id, updatedTitle) => {
+    const { todos } = this.state;
     this.setState({
-      todos: this.state.todos.map((todo) => {
+      todos: todos.map((todo) => {
         if (todo.id === id) {
+          // eslint-disable-next-line no-param-reassign
           todo.title = updatedTitle;
         }
         return todo;
@@ -72,13 +76,14 @@ class TodoContainer extends Component {
   };
 
   render() {
+    const { todos } = this.state;
     return (
       <div className="container">
         <div className="inner">
           <Header />
           <InputTodo addTodoProp={this.addTodoItem} />
           <TodosList
-            todos={this.state.todos}
+            todos={todos}
             handelChangeProp={this.handleChange}
             deleteTodoProp={this.delTodo}
             editTodoProp={this.editTodo}

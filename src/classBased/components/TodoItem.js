@@ -1,9 +1,15 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './TodoItem.module.css';
+
 class TodoItem extends React.Component {
-  state = {
-    edit: false,
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      edit: false,
+    };
+  }
+
   handelEditing = () => {
     this.setState({
       edit: true,
@@ -19,9 +25,16 @@ class TodoItem extends React.Component {
   };
 
   render() {
-    let editMode = {};
-    let viewMode = {};
-    if (this.state.edit === true) {
+    const editMode = {};
+    const viewMode = {};
+    const { edit } = this.state;
+    const {
+      todo,
+      handelChangeProp,
+      deleteTodoProp,
+      editTodoProp,
+    } = this.props;
+    if (edit === true) {
       viewMode.display = 'none';
     } else {
       editMode.display = 'none';
@@ -32,7 +45,7 @@ class TodoItem extends React.Component {
       opacity: 0.4,
       textDecoration: 'line-through',
     };
-    const { id, title, completed } = this.props.todo;
+    const { id, title, completed } = todo;
     return (
       <li className={styles.item}>
         <div
@@ -46,13 +59,14 @@ class TodoItem extends React.Component {
             type="checkbox"
             checked={completed}
             onChange={() => {
-              this.props.handelChangeProp(id);
+              handelChangeProp(id);
             }}
           />
           <span style={completed ? completedStyle : null}>{title}</span>
           <button
+            type="button"
             onClick={() => {
-              this.props.deleteTodoProp(id);
+              deleteTodoProp(id);
             }}
           >
             Delete
@@ -64,7 +78,7 @@ class TodoItem extends React.Component {
           className={styles.textInput}
           value={title}
           onChange={(e) => {
-            this.props.editTodoProp(id, e.target.value);
+            editTodoProp(id, e.target.value);
           }}
           onKeyDown={this.endEdit}
         />
@@ -72,5 +86,13 @@ class TodoItem extends React.Component {
     );
   }
 }
+
+TodoItem.propTypes = {
+  // eslint-disable-next-line react/forbid-prop-types
+  todo: PropTypes.object.isRequired,
+  handelChangeProp: PropTypes.func.isRequired,
+  deleteTodoProp: PropTypes.func.isRequired,
+  editTodoProp: PropTypes.func.isRequired,
+};
 
 export default TodoItem;

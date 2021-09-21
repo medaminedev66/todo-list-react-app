@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
+import PropTypes from 'prop-types';
 
 const InputTodo = (props) => {
   const [inputText, setInputText] = useState({
     title: '',
   });
+
+  let alert = '';
 
   const onChange = (e) => {
     setInputText({
@@ -20,7 +23,7 @@ const InputTodo = (props) => {
         title: '',
       });
     } else {
-      alert('Please write item');
+      alert = 'Please write item';
     }
   };
 
@@ -34,9 +37,16 @@ const InputTodo = (props) => {
         name="title"
         onChange={onChange}
       />
-      <button className="input-submit">Submit</button>
+      <h4>{alert}</h4>
+      <button type="button" className="input-submit">
+        Submit
+      </button>
     </form>
   );
+};
+
+InputTodo.propTypes = {
+  addTodoProp: PropTypes.func.isRequired,
 };
 
 export default InputTodo;
