@@ -1,8 +1,12 @@
 import { v4 as uuidv4 } from 'uuid';
 import React, { Component } from 'react';
+import { Route, Switch } from 'react-router-dom';
 import TodosList from './TodosList';
 import Header from './Header';
 import InputTodo from './InputTodo';
+import About from '../../functionBased/pages/About';
+import NotMatch from '../../functionBased/pages/NoMatch';
+import Navbar from './Navbar';
 
 class TodoContainer extends Component {
   constructor() {
@@ -78,18 +82,31 @@ class TodoContainer extends Component {
   render() {
     const { todos } = this.state;
     return (
-      <div className="container">
-        <div className="inner">
-          <Header />
-          <InputTodo addTodoProp={this.addTodoItem} />
-          <TodosList
-            todos={todos}
-            handelChangeProp={this.handleChange}
-            deleteTodoProp={this.delTodo}
-            editTodoProp={this.editTodo}
-          />
-        </div>
-      </div>
+      <>
+        <Navbar />
+        <Switch>
+          <Route exact path="/">
+            <div className="container">
+              <div className="inner">
+                <Header />
+                <InputTodo addTodoProp={this.addTodoItem} />
+                <TodosList
+                  todos={todos}
+                  handelChangeProp={this.handleChange}
+                  deleteTodoProp={this.delTodo}
+                  editTodoProp={this.editTodo}
+                />
+              </div>
+            </div>
+          </Route>
+          <Route path="/about">
+            <About />
+          </Route>
+          <Route path="*">
+            <NotMatch />
+          </Route>
+        </Switch>
+      </>
     );
   }
 }
